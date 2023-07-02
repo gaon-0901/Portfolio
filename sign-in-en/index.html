@@ -1,32 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
   <link rel="stylesheet" href="index.css">
+  <style>
+    /* 배경이 비치도록 하는 스타일 */
+    .transparent-navbar {
+      background-color: rgba(255, 255, 255, 0); /* 투명도 조절을 위해 RGBA 사용 */
+    }
+    /* 네비게이션 바 상단에 고정 */
+    nav.navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+    .navbar-brand {
+        color: #fff;
+    }
+  </style>
   <title>Login Page</title>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light transparent-navbar">
+        <div class="container">
+          <a class="navbar-brand" href="../web-en/index.html">Main</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+    </nav>
     <section>
         <div class="form-box">
             <div class="form-value">
-                <form action="">
-                    <h2>Login</h2>
+                <form action="/login" method="POST">
+                    <!-- 사용자 이름 입력 -->
                     <div class="inputbox">
                         <ion-icon name="mail-outline"></ion-icon>
-                        <input type="text" required>
+                        <input type="text" name="username" required>
                         <label for="">UserName</label>
                     </div>
+                    <!-- 비밀번호 입력 -->
                     <div class="inputbox">
                         <ion-icon name="lock-closed-outline"></ion-icon>
-                        <input type="password" required>
+                        <input type="password" name="password" required>
                         <label for="">Password</label>
                     </div>
+                    <!-- 기억하기 체크박스 -->
                     <div class="forget">
-                        <label for=""><input type="checkbox">Remember Me  <a href="../pass-en/index.html">Forget Password</a></label>
-                      
+                        <label for=""><input type="checkbox" name="rememberMe">Remember Me  ⠀⠀⠀⠀ﾠﾠﾠ<a href="../pass-en/index.html">Forget Password</a></label>
                     </div>
-                    <button>Log in</button>
+                    <button type="submit">Log in</button>
                     <div class="register">
-                        <p>Don't have a account <a href="../sign-up-en/index.html">Register</a></p>
+                        <p>Don't have an account <a href="../sign-up-en/index.html">Register</a></p>
                     </div>
                 </form>
             </div>
@@ -34,5 +60,46 @@
     </section>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+    <script>
+        document.querySelector('form').addEventListener('submit', async (event) => {
+            event.preventDefault(); // 폼 기본 동작 방지
+    
+            const formData = new FormData(event.target);
+            const username = formData.get('username');
+            const password = formData.get('password');
+            const rememberMe = formData.get('rememberMe');
+    
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+    
+                const data = await response.json();
+    
+                if (response.ok) {
+                    // 로그인 성공 시 처리
+                    const token = data.token;
+                    // 토큰을 사용하여 사용자 인증 상태를 유지하는 방법을 구현하면 됩니다.
+                    // 예: 로컬 스토리지에 토큰 저장 및 사용자 인증 여부 확인
+                    console.log('Login success! Token:', token);
+                } else {
+                    // 로그인 실패 시 처리
+                    console.error('Login failed:', data.message);
+                }
+            } catch (error) {
+                console.error('Error occurred during login:', error);
+            }
+        });
+    </script>
 </body>
 </html>
