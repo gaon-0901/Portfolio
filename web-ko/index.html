@@ -1,48 +1,139 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>포트폴리오</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light transparent-navbar">
-        <div class="container">
-          <a class="navbar-brand" href="#">포트폴리오</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="#about">소개</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#contact">연락처</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown"
-                  aria-expanded="false">언어</a>
-                <ul class="dropdown-menu" aria-labelledby="languageDropdown">
-                  <li><a class="dropdown-item" href="../web-ko/index.html">한국어</a></li>
-                  <li><a class="dropdown-item" href="../web-en/index.html">English</a></li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="../sign-up-ko/index.html">회원 가입</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="../sign-in-ko/index.html">로그인</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
 
-    <!-- 부트스트랩 JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>포트폴리오</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light transparent-navbar">
+    <div class="container">
+      <a class="navbar-brand" href="#">포트폴리오</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#about">소개</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#contact">연락처</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">언어</a>
+            <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+              <li><a class="dropdown-item" href="../web-ko/index.html">한국어</a></li>
+              <li><a class="dropdown-item" href="../web-en/index.html">English</a></li>
+            </ul>
+          </li>
+          <!-- 회원가입, 로그인 버튼은 로그인 상태에 따라 동적으로 변경 -->
+          <li class="nav-item" id="navbarUser">
+            <!-- 여기에 동그란 이미지를 보여줍니다. -->
+            <div class="navbar-img" id="userImageContainer" style="display: none;">
+              <!-- 이미지를 서버에서 가져오거나 기본 이미지를 사용하세요. -->
+              <img src="../assets/images/default.jpg" alt="User Image">
+            </div>
+          </li>
+          <!-- 로그아웃 버튼은 로그인 상태에 따라 동적으로 변경 -->
+          <li class="nav-item" id="navbarLogout" style="display: none;">
+            <a class="nav-link" href="#" onclick="logout()">로그아웃</a>
+          </li>
+          <!-- 회원가입, 로그인 버튼 추가 -->
+          <li class="nav-item" id="navbarLogin">
+            <a class="nav-link" href="../sign-in-ko/index.html" onclick="showLoginForm()">로그인</a>
+          </li>
+          <li class="nav-item" id="navbarSignup">
+            <a class="nav-link" href="../sign-up-ko/index.html" onclick="showSignupForm()">회원가입</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 회원가입 폼과 로그인 폼을 숨겨 놓을 요소 -->
+  <div id="signupForm" style="display: none;">
+    <!-- 회원가입 폼 HTML 내용을 여기에 추가하세요. -->
+    <!-- 예를 들어, 입력 필드와 회원가입 버튼 등을 포함할 수 있습니다. -->
+  </div>
+  <div id="loginForm" style="display: none;">
+    <!-- 로그인 폼 HTML 내용을 여기에 추가하세요. -->
+    <!-- 예를 들어, 입력 필드와 로그인 버튼 등을 포함할 수 있습니다. -->
+  </div>
+
+  <!-- 부트스트랩 JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"
+    integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS"
+    crossorigin="anonymous"></script>
+
+  <script>
+    // 토큰을 쿠키에 저장하는 함수
+    function setCookie(token) {
+      document.cookie = `token=${token};path=/`;
+    }
+
+    // 쿠키에서 토큰을 가져오는 함수
+    function getCookie() {
+      const name = "token=";
+      const decodedCookie = decodeURIComponent(document.cookie);
+      const cookies = decodedCookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(name) === 0) {
+          return cookie.substring(name.length, cookie.length);
+        }
+      }
+      return null;
+    }
+
+    // 로그아웃 함수
+    function logout() {
+      // 토큰을 쿠키에서 삭제
+      document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      // 페이지를 새로고침하여 로그아웃 상태로 변경
+      window.location.reload();
+    }
+
+  // 페이지 로드 시, 쿠키에서 토큰을 확인하여 로그인 상태를 유지하는 코드
+  window.onload = () => {
+    const token = getCookie();
+    if (token) {
+      // 로그인 상태일 때
+      document.getElementById('userImageContainer').style.display = 'block'; // 이미지 보여주기
+      document.getElementById('navbarLogin').style.display = 'none'; // 로그인 버튼 감추기
+      document.getElementById('navbarSignup').style.display = 'none'; // 회원가입 버튼 감추기
+      document.getElementById('navbarLogout').style.display = 'block'; // 로그아웃 버튼 보이기
+    } else {
+      // 로그인 상태가 아닐 때
+      document.getElementById('userImageContainer').style.display = 'none'; // 이미지 감추기
+      document.getElementById('navbarLogin').style.display = 'block'; // 로그인 버튼 보이기
+      document.getElementById('navbarSignup').style.display = 'block'; // 회원가입 버튼 보이기
+      document.getElementById('navbarLogout').style.display = 'none'; // 로그아웃 버튼 감추기
+    }
+  };
+  
+    // 로그인 폼 보여주는 함수
+    function showLoginForm() {
+      document.getElementById('loginForm').style.display = 'block';
+      document.getElementById('signupForm').style.display = 'none';
+    }
+
+    // 회원가입 폼 보여주는 함수
+    function showSignupForm() {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('signupForm').style.display = 'block';
+    }
+  </script>
 </body>
+
 </html>
